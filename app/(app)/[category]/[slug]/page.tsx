@@ -1,35 +1,59 @@
+"use client";
+
 import { client, urlFor } from "@/app/lib/sanity";
 import Image from "next/image";
 import Link from "next/link";
 
 async function getData(slug: string) {
-  const query = `*[_type == "tabs" && slug.current == "${slug}"][0]`;
+  const query = `*[_type == "product" && slug.current == "${slug}"][0]`;
   const data = await client.fetch(query);
   return data;
 }
 
-async function getNextTabs(currentSlug: string) {
-  const query = `*[_type == 'tabs' && slug.current != "${currentSlug}"]`;
-  const nextTabs = await client.fetch(query);
-  return nextTabs;
+async function getNextProducts(slug: string) {
+  const query = `*[_type == 'product' && slug.current != "${slug}"]`;
+  const nextProducts = await client.fetch(query);
+  return nextProducts;
 }
 
-const TabProductPage = async ({ params }: { params: { slug: string } }) => {
-  const data: FullTab = await getData(params.slug);
-  const nextTabs: FullTab[] = await getNextTabs(params.slug);
+export const CategoryItem = async ({
+  params,
+}: {
+  params: { slug: string };
+}) => {
+  const data = await getData(params.slug);
+  const nextProducts = await getNextProducts(params.slug);
 
   return (
     <div className="flex flex-col xl:mx-20">
       <div className="xl:flex xl:flex-row w-full xl:justify-center">
-        <div className="relative aspect-square xl:w-[600px] xl:h-[600px]">
-          <Image
-            src={urlFor(data.image).url()}
-            alt={data.name}
-            fill
-            className="p-8 rounded-md -mt-8 md:p-32 md:-mt-32 xl:p-0 xl:mt-0"
-          />
+        <div className="px-8">
+          <div className="border w-full lg:w-[600px] aspect-square relative rounded-md border-white">
+            <Image
+              src={urlFor(data.images[0]).url()}
+              alt={data.name}
+              fill
+              className="rounded-md object-contain p-6 border-white"
+            />
+          </div>
+          <div className="mb-8 mt-4 flex gap-4 overflow-x-auto">
+            {data.images.map((image: any, i: number) => (
+              <span
+                key={i}
+                className="relative aspect-square w-16 flex-shrink-0"
+              >
+                <Image
+                  src={urlFor(image).url()}
+                  alt={`${data.name} ${i}`}
+                  fill
+                  className="p-2 rounded-md object-contain aspect-square border"
+                />
+              </span>
+            ))}
+          </div>
         </div>
-        <div className="mx-8 -mt-10 | md:-mt-56 md:mx-20 | xl:mt-0 xl:mx-8 xl:flex xl:flex-col xl:justify-between xl:max-w-96">
+
+        <div className="mx-8 mt-5 | md:mt-10 md:mx-20 | xl:mt-0 xl:mx-8 xl:flex xl:flex-col xl:justify-between xl:max-w-96">
           {/* ALL SONGS */}
           <div>
             <div className="text-wrap gap-2">
@@ -43,13 +67,6 @@ const TabProductPage = async ({ params }: { params: { slug: string } }) => {
             <h1 className="mt-4 mb-2 text-sm | md:text-lg | lg:text-2xl">
               {data.description}
             </h1>
-            <div className="font-light text-[12px] | md:text-base | lg:text-xl">
-              {data.allTabs?.map((tab: string, i: number) => (
-                <ol key={i}>
-                  <li>{`${i + 1}. ${tab}`}</li>
-                </ol>
-              ))}
-            </div>
           </div>
 
           {/* ADD CART */}
@@ -72,21 +89,21 @@ const TabProductPage = async ({ params }: { params: { slug: string } }) => {
           YOU MAY ALSO LIKE
         </p>
         <div className="flex overflow-x-scroll gap-4 mt-3 | md:gap-6 | lg:mt-5 | xl:pl-0 scrollbar scrollbar-thumb-gray-400 scrollbar-track-gray-800">
-          {nextTabs?.map((tab: FullTab, i: number) => (
+          {nextProducts?.map((product: FullProduct, i: number) => (
             <div key={i} className="text-xs font-light last:pr-8 ">
               <div className="relative aspect-square w-32 md:w-80">
-                <Link href={`/Tabs/${tab.slug.current}`}>
+                <Link href={`/Merch/${product.slug.current}`}>
                   <Image
-                    src={urlFor(tab.image).url()}
-                    alt={tab.name}
+                    src={urlFor(product.images[0]).url()}
+                    alt={product.name}
                     fill
                     priority
-                    className="rounded-md"
+                    className="rounded-md object-contain"
                   />
                 </Link>
               </div>
               <p className="mb-1 mt-2 text-[12px] | md:text-base | lg:text-xl">
-                {tab.name}
+                {product.name}
               </p>
             </div>
           ))}
@@ -96,14 +113,14 @@ const TabProductPage = async ({ params }: { params: { slug: string } }) => {
   );
 };
 
-export default TabProductPage;
+export default CategoryItem;
 
-interface FullTab {
+interface FullProduct {
   _id: string;
   name: string;
   price: number;
   description: string;
-  allTabs: [string];
-  image: any;
+  images: [string];
+
   slug: any;
 }

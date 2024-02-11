@@ -105,13 +105,13 @@ const Navbar = () => {
                     </div>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="p-2 mt-2">
-                    <Link href="/Merch/Apparel">
+                    <Link href="/Apparel">
                       <DropdownMenuItem>Apparel</DropdownMenuItem>
                     </Link>
-                    <Link href="/Merch/Accessories">
+                    <Link href="/Accessories">
                       <DropdownMenuItem>Accessories</DropdownMenuItem>
                     </Link>
-                    <Link href="/Merch/Posters">
+                    <Link href="/Posters">
                       <DropdownMenuItem>Posters</DropdownMenuItem>
                     </Link>
                   </DropdownMenuContent>
@@ -172,19 +172,19 @@ const Navbar = () => {
                 </p>
                 <div className="flex flex-col space-y-4 md:space-y-5 text-sm md:text-xl">
                   <Link
-                    href="/Merch/Apparel"
+                    href="/Apparel"
                     className="text-sm md:text-xl hover:scale-105 transition-transform"
                   >
                     Apparel
                   </Link>
                   <Link
-                    href="/Merch/Accessories"
+                    href="/Accessories"
                     className="text-sm md:text-xl hover:scale-105 transition-transform"
                   >
                     Accessories
                   </Link>
                   <Link
-                    href="/Merch/Posters"
+                    href="/Posters"
                     className="text-sm md:text-xl hover:scale-105 transition-transform"
                   >
                     Posters
