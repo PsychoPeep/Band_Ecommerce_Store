@@ -56,7 +56,7 @@ const Navbar = () => {
   const pathname = usePathname();
 
   return (
-    <nav className="bg-background sticky top-0 z-50 flex justify-between items-center | px-6 py-6 | lg:px-16 lg:py-10">
+    <nav className="bg-background sticky top-0 z-50 flex justify-between items-center | px-6 py-6 mb-8 | md:px-16 | xl:px-20 | lg:px-16 lg:py-10 ">
       <div className="flex items-center gap-10">
         <Link href="/">
           <div className="relative | h-7 w-36 | md:h-10 md:w-48 | lg:h-12 lg:w-60 ">
