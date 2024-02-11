@@ -17,7 +17,7 @@ async function Tour() {
       <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 | gap-3 xl:gap-4">
         {data.map((ticket: SimplifiedTicket, i: number) => (
           /* Component */
-          <Link href={`/Tour/${ticket._id}`} target="_blank">
+          <Link href={`/Tour/${ticket._id}`} target="_blank" key={i}>
             <div
               key={i}
               className=" border rounded-md p-5 xl:p-6 flex justify-between items-center"
